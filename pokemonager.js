@@ -2,71 +2,72 @@
   class Pokemonager {
     // This should return an array of all the names of n Pokemon from the Pokemon API.
 
-    /*
-        // TESTS FOR findNames(n)
-        expect(called, "Array.map() to have been called").to.be.true;
-        expect(Array.isArray(actual)).to.equal(true);
-        expect(actual.length).to.equal(100);
-        expect(actual).to.deep.equal(names);
-
-        fetch('http://example.com/movies.json')
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-        });
-
-        remember to use .catch()
-
-        fetch from this url
-        what is returned and what to do what is returned
-
-    */
-
     async findNames(n) {
       let array = [];
 
-      let data = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=100')
-      .then(
-        // put methods here for map
-        response => response.json()
-      ).then((json) => {
-        for(let key in json) {
-          if(key === "results") {
-           console.log(json[key]);
-            // map things here
-            // add those things to array
-            json[key].map((pokemonObject)=>{
-              if (array.length===n){
-                return array;
-              }
-              array.push(pokemonObject["name"])
-              // return pokemonObject["name"];
-            })
-          }
-        }
-      }).catch(err => console.log(err));
-      
+       let data = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=100')
+                        .then(
+                          // put methods here for map
+                         response => response.json()
+                        ).then((json) => {
+                          for(let key in json) {
+                            if(key === "results") {
+                              json[key].map((pokemonObject)=>{
+                              if (array.length===n){
+                                  return array;
+                                }
+                                array.push(pokemonObject["name"])
+                              })
+                            }
+                          }
+                        }).catch(err => console.log(err));
       return array;
     }
 
-    // This should return an array of all the Pokemon that are under a particular weight.
+    async findUnderWeight(weight) {
+      let array = [];
+      
+      let data = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=40')
+                        .then(
+                          // put methods here for map
+                          response => response.json()
+                        ).then((json) => {
+                          for(let key in json) {
+                            if(key === "results") {
+                              // json[key].map((pokemonObject)=>{
+                              // if (array.length===4){
+                              //     return array;
+                              //   }
+                              // if (pokemonObject["weight"]< weight){
+                              //     array.push(pokemonObject["name"])
+                              //   }
+                              // })
+                              //
+                              // USE .filter() ! ! ! ! ! 
+                              // hey Tam! Here's what I wrote out below. I can't run the tests unfortunately. I hope it works!!!
+                              json[key].filter((pokemonObject)=>{
+                                console.log(pokemonObject);
+                                if(array.length===4){
+                                  return array;
+                                }
 
-    findUnderWeight(weight) {
-      // let array = [];
+                               console.log(pokemonObject["url"]);
 
-      // let data = fetch('https://pokeapi.co/api/v2/pokemon/', )
-      // .then(
+                                fetch(pokemonObject["url"]).then(
+                                 (pokemon) => {
+                                   console.log(pokemon);
+                                 } 
+                                )
 
-      // ).catch(
-
-      // )
-
-      // return array;
-      // Your code here.
-      // ** LIMIT TO THE FIRST 10 POKEMON
-      // We don't want to make too many unnecessary calls to the Pokemon API
+                                // if (pokemonObject["weight"]<weight){
+                                //   array.push(pokemonObject["name"]);
+                                // }
+                              })
+                            }
+                          }
+                        }).catch(err => console.log(err));
+      
+      return array;
     }
   }
 
